@@ -12,6 +12,27 @@ const inputButtons = [
 
 export default class Calculator extends Component{
 
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            inputValue: 0
+        }
+    }
+onButtonPressed(input){
+    switch (typeof input) {
+        case 'number':
+            return this.handleNumberInput(input)
+    }
+}
+
+handleNumberInput(num){
+    let inputValue = (this.state.inputValue * 10) + num;
+
+    this.setState({
+        inputValue: inputValue
+    })
+}
     inputNumbers(){
         let views = [];
     
@@ -23,7 +44,9 @@ export default class Calculator extends Component{
                     let input = row[i];
     
                     inputRow.push(
-                        <InputButton number={input} key={r + "-" + i} />
+                        <InputButton number={input} 
+                        onPress={this.onButtonPressed.bind(this, input)}
+                        key={r + "-" + i} />
                     );
                 }
     
@@ -37,7 +60,7 @@ export default class Calculator extends Component{
         return(
             <View style = {styles.container}>
                <View style = {styles.resultDisplay}>
-               
+               <Text style={styles.displayText}>{this.state.inputValue}</Text>
                </View>
                 <View style = {styles.inputContainer}>
                     {this.inputNumbers()}
@@ -55,18 +78,26 @@ const styles = StyleSheet.create({
     },
     resultDisplay :{
         flex:2,
-        backgroundColor:"red"
+        backgroundColor: "#AEB6BF",
+        justifyContent: 'center'
     },
 
    inputContainer :{
         flex:8,
-        backgroundColor :"green"
+        backgroundColor : "#5D6D7E"
 
     },
 
     inputRow: {
         flex: 1,
         flexDirection: 'row'
+    },
+    displayText :{
+        color: 'white',
+        fontSize: 38,
+        fontWeight: 'bold',
+        textAlign: 'right',
+        padding: 20
     }
 
 })
